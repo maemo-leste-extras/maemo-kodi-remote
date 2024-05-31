@@ -1,15 +1,13 @@
 ## maemo-kodi-remote
 
-A simple and easy-to-use Kodi remote.
-
-Made for devices with a physical keyboard.
+A simple and easy-to-use Kodi remote for devices running Maemo Leste with a physical keyboard.
 
 ### Features
 
-- Multiple Kodi instances in one app
+- Manage multiple Kodi instances
 - Auto-discovery on LAN
 - Media thumbnail
-- Navigation
+- Navigation & play/pause/stop
 - Volume control
 - Mute/unmute
 - Sending keystrokes
