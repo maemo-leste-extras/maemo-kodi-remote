@@ -12,7 +12,6 @@
 int main(int argc, char *argv[]) {
   Q_INIT_RESOURCE(assets);
 
-  qputenv("QML_DISABLE_DISK_CACHE", "1");
   QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QApplication::setApplicationName("maemo-kodi-remote");
   QApplication::setOrganizationDomain("maemo-leste.github.io");
