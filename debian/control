@@ -1,0 +1,36 @@
+Source: maemo-kodi-remote
+Section: x11
+Priority: extra
+Maintainer: Sander <sander@sanderf.nl>
+Build-Depends: debhelper (>= 10),
+    qtbase5-dev,
+    cmake,
+    libx11-dev,
+    zlib1g-dev,
+    libpng-dev,
+    libqt5svg5-dev,
+    libqt5maemo5-dev,
+    libqt5x11extras5-dev,
+    qtquickcontrols2-5-dev,
+    qtdeclarative5-dev,
+    qtdeclarative5-dev-tools
+Homepage: https://github.com/maemo-leste-extras/maemo-kodi-remote
+XSBC-Bugtracker: https://github.com/maemo-leste-extras/maemo-kodi-remote/issues
+Vcs-Git: https://github.com/maemo-leste-extras/maemo-kodi-remote/
+Vcs-Browser: https://github.com/maemo-leste-extras/maemo-kodi-remote/
+
+
+Package: maemo-kodi-remote
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+    libqt5quickcontrols2-5,
+    qml-module-qtquick-controls2,
+    qml-module-qtquick2,
+    qml-module-qtquick-layouts,
+    qml-module-qtquick-controls,
+    qml-module-qtquick-extras,
+    qml-module-qtquick-dialogs,
+    qml-module-qtquick-controls,
+    nmap,
+    curl
+Description: Maemo Conversations UI with RTCOM and Telepathy integration
