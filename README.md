@@ -2,6 +2,8 @@
 
 A simple and easy-to-use Kodi remote for devices running Maemo Leste with a physical keyboard.
 
+It also runs well on a regular desktop (although Linux only).
+
 ### Features
 
 - Manage multiple Kodi instances
