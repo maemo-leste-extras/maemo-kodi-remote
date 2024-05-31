@@ -1,0 +1,33 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/lib/DialogInput.qml</file>
+        <file>qml/lib/DialogList.qml</file>
+        <file>qml/lib/DialogMessage.qml</file>
+        <file>qml/lib/StackViewFancy.qml</file>
+        <file>qml/lib/TextPlain.qml</file>
+        <file>qml/lib/OneSidedRoundedRectangle.qml</file>
+        <file>qml/lib/FontAwesome.qml</file>
+        <file>qml/lib/FontAwesomeVariables.qml</file>
+        <file>qml/lib/FontAwesomeLoader.qml</file>
+
+        <file>assets/fonts/Roboto-Bold.ttf</file>
+        <file>assets/fonts/Roboto-Light.ttf</file>
+        <file>assets/fonts/Roboto-Medium.ttf</file>
+        <file>assets/fonts/RobotoMono-Bold.ttf</file>
+        <file>assets/fonts/RobotoMono-Light.ttf</file>
+        <file>assets/fonts/RobotoMono-Medium.ttf</file>
+        <file>assets/fonts/RobotoMono-Regular.ttf</file>
+        <file>assets/fonts/Roboto-Regular.ttf</file>
+        <file>assets/fonts/fontawesome-webfont.ttf</file>
+
+        <file>assets/video_tab_icon.svg</file>
+        <file>assets/appicon.icns</file>
+        <file>assets/kodiscan.sh</file>
+        <file>assets/kodiping.sh</file>
+        <file>assets/monitor_on.png</file>
+        <file>assets/monitor_off.png</file>
+        <file>assets/settings.png</file>
+        <file alias="overviewRichDelegate.css">overview/overviewRichDelegate.css</file>
+    </qresource>
+</RCC>
