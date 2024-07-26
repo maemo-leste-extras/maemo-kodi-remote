@@ -34,4 +34,4 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
     qml-module-qtquick-controls,
     nmap,
     curl
-Description: Maemo Conversations UI with RTCOM and Telepathy integration
+Description: Control Kodi from your Maemo Leste device
