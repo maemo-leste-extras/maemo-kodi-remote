@@ -97,5 +97,5 @@ if(X11_FOUND)
 endif()
 
 install(TARGETS maemo_kodi_remote
-        DESTINATION ${CMAKE_INSTALL_PREFIX}
+        DESTINATION bin
         )
