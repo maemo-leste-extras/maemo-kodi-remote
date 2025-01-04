@@ -1,5 +1,5 @@
 Source: maemo-kodi-remote
-Section: x11
+Section: user/utilities
 Priority: extra
 Maintainer: Sander <sander@sanderf.nl>
 Build-Depends: debhelper (>= 10),
