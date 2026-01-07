@@ -1,3 +1,9 @@
+maemo-kodi-remote (0.2.6) unstable; urgency=medium
+
+  * debian/control: section user/multimedia
+
+ -- Sander <sander@sanderf.nl>  Wed, 7 Jan 2026 20:21:36 +0100
+
 maemo-kodi-remote (0.2.5) unstable; urgency=medium
 
   * debian/control: add icon
