@@ -60,12 +60,12 @@ Rectangle {
     }
     ListElement {
         k: "backspace"
-        v: "return"
+        v: "back"
         icon: ""
     }
     ListElement {
         k: "enter"
-        v: "select"
+        v: "osd controls"
         icon: ""
     }
     ListElement {
@@ -76,6 +76,16 @@ Rectangle {
     ListElement {
         k: "i"
         v: "info"
+        icon: ""
+    }
+    ListElement {
+        k: "o"
+        v: "player info"
+        icon: ""
+    }
+    ListElement {
+        k: "tab"
+        v: "fullscreen video"
         icon: ""
     }
   }

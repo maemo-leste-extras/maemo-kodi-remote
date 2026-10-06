@@ -7,6 +7,7 @@
 
 #include "lib/utils.h"
 #include "lib/network/httpkodi.h"
+#include "lib/network/eventserver.h"
 
 enum KodiNowPlayingType {
     MOVIE = 0,
@@ -400,6 +401,20 @@ public:
   unsigned int volume = 100;
 
   void send(const QString &cmd);
+  // Execute a Kodi built-in input action (see the Input.Action enum), e.g.
+  // "osd", "up", "select", "back", "fullscreen". This is routed to the
+  // currently focused Kodi window and is independent of the user's keymap, so
+  // it reproduces the intended keyboard behaviour deterministically.
+  Q_INVOKABLE void executeAction(const QString &action);
+  // Context-aware keys: they query the current Kodi window and dispatch the
+  // action a physical keyboard would produce in that context. dir is one of
+  // "up", "down", "left", "right".
+  Q_INVOKABLE void enterAction();
+  Q_INVOKABLE void navAction(const QString &dir);
+  void onContextStateFinished(const QJsonDocument &response);
+  // Raw keyboard passthrough via the EventServer (routed through Kodi's
+  // keymaps, i.e. subject to the user's keyboard.xml).
+  Q_INVOKABLE void sendKey(const QString &keyname);
   Q_INVOKABLE void sendText(QString msg);
 
   Q_INVOKABLE QString urlRPC() {
@@ -516,4 +531,9 @@ private:
 
   HttpKodi *m_httpNowPlaying;
   QTimer *m_nowPlayingTimer;
+
+  HttpKodi *m_httpContext;
+  QString m_pendingKey;
+
+  EventServer *m_eventServer;
 };

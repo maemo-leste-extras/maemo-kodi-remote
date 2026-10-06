@@ -70,6 +70,21 @@ KodiSrc::KodiSrc(const QString &name, const QString &address, const QString &sch
   m_nowPlayingTimer->setInterval(m_nowPlayingInterval);
   m_nowPlayingTimer->start();
 
+  // raw keyboard passthrough (EventServer UDP :9777) -- mirrors a real keyboard
+  m_eventServer = new EventServer(this);
+  m_eventServer->setAddress(address);
+  connect(this, &KodiSrc::kodiURLChanged, [this](QString, QString, QString) {
+    m_eventServer->setAddress(this->address);
+  });
+
+  // context-aware keys (Enter / arrows): need the current window to pick the
+  // right action, like a physical keyboard would
+  m_httpContext = new HttpKodi("m_httpContext", this->urlRPC());
+  connect(this, &KodiSrc::kodiURLChanged, m_httpContext, &HttpKodi::onUrlChanged);
+  m_httpContext->setCredentials(username, password);
+  connect(m_httpContext, &HttpKodi::requestComplete, this, &KodiSrc::onContextStateFinished);
+  connect(m_httpContext, &HttpKodi::requestFailed, this, &KodiSrc::onPongFailed);
+
   if(this->name.isEmpty())
     this->name = QString("%1:%2").arg(address, QString::number(port));
 }
@@ -77,6 +92,64 @@ KodiSrc::KodiSrc(const QString &name, const QString &address, const QString &sch
 void KodiSrc::send(const QString &cmd) {
   qDebug() << "send" << cmd;
   m_http->post(QString("send.%1").arg(cmd), cmd, QJsonObject());
+}
+
+void KodiSrc::executeAction(const QString &action) {
+  qDebug() << "executeAction" << action;
+  QJsonObject params;
+  params["action"] = action;
+  m_http->post(QString("executeAction.%1").arg(action), "Input.ExecuteAction", params);
+}
+
+void KodiSrc::enterAction() {
+  m_pendingKey = "enter";
+  QJsonObject params;
+  params["properties"] = QJsonArray::fromStringList(QStringList() << "currentwindow");
+  m_httpContext->post("contextState", "GUI.GetProperties", params);
+}
+
+void KodiSrc::navAction(const QString &dir) {
+  m_pendingKey = dir;
+  QJsonObject params;
+  params["properties"] = QJsonArray::fromStringList(QStringList() << "currentwindow");
+  m_httpContext->post("contextState", "GUI.GetProperties", params);
+}
+
+void KodiSrc::onContextStateFinished(const QJsonDocument &response) {
+  auto obj = response.object();
+  if(!obj.contains("id") || !obj.contains("result"))
+    return;
+
+  const int osdWindowId       = 12901; // "Fullscreen OSD"
+  const int fullscreenVideoId = 12005; // "Fullscreen video"
+  auto win = obj["result"].toObject()["currentwindow"].toObject();
+  const int winId = win["id"].toInt();
+  const QString key = m_pendingKey;
+
+  if(key == "enter") {
+    // In a menu/list Enter activates the selected item; in fullscreen video
+    // with the OSD closed it opens the OSD bar; with the OSD open it activates
+    // the focused OSD control.
+    if(winId == fullscreenVideoId)
+      executeAction("osd");
+    else
+      executeAction("select");
+  } else if(key == "left" || key == "right") {
+    // In fullscreen video with the OSD closed, left/right seek the video;
+    // everywhere else they move the selection.
+    if(winId == fullscreenVideoId)
+      executeAction(key == "left" ? "stepback" : "stepforward");
+    else
+      executeAction(key);
+  } else {
+    // up/down always move the selection (navigate OSD or list).
+    executeAction(key);
+  }
+}
+
+void KodiSrc::sendKey(const QString &keyname) {
+  qDebug() << "sendKey" << keyname;
+  m_eventServer->sendKey(keyname);
 }
 
 void KodiSrc::sendText(QString msg) {

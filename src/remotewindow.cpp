@@ -93,16 +93,23 @@ bool RemoteWindow::eventFilter(QObject *watched, QEvent *event) {
       }
 
       if(!inputBoxActive) {
+        // Input keys are sent as Kodi "actions" (Input.ExecuteAction) rather
+        // than raw keys. Actions are routed to the currently focused Kodi
+        // window, so they navigate the OSD (or lists) the way a keyboard
+        // would, and -- unlike raw EventServer keys -- they are NOT remapped
+        // by the user's own keyboard.xml.
         if(key == Qt::Key_Return || key == Qt::Key_Enter) {
-          mdl->send("Input.Select");
+          // keyboard-like Enter: opens the OSD if closed, otherwise activates
+          // the focused OSD control (see KodiSrc::enterAction)
+          mdl->enterAction();
         } else if(key == Qt::Key_H) {
-          mdl->send("Input.Left");
+          mdl->navAction("left");
         } else if(key == Qt::Key_J) {
-          mdl->send("Input.Down");
+          mdl->navAction("down");
         } else if(key == Qt::Key_K) {
-          mdl->send("Input.Up");
+          mdl->navAction("up");
         } else if(key == Qt::Key_L) {
-          mdl->send("Input.Right");
+          mdl->navAction("right");
         } else if(key == Qt::Key_0) {
           mdl->toggleMute();
         } else if(key == Qt::Key_1) {
@@ -124,18 +131,25 @@ bool RemoteWindow::eventFilter(QObject *watched, QEvent *event) {
         } else if(key == Qt::Key_9) {
           mdl->setVolume(100);
         } else if(key == Qt::Key_Backspace) {
-          mdl->send("Input.Back");
+          mdl->executeAction("back");
         } else if(key == Qt::Key_I) {
-          mdl->send("Input.Info");
+          mdl->executeAction("info");
+        } else if(key == Qt::Key_O) {
+          // player process info: codec / hardware decoding / resolution overlay
+          // (what "o" does on a standard Kodi keyboard)
+          mdl->executeAction("playerprocessinfo");
+        } else if(key == Qt::Key_Tab) {
+          // return to the playing fullscreen video (NOT togglefullscreen,
+          // which prompts a resolution change)
+          mdl->executeAction("fullscreen");
         } else if(key == Qt::Key_Up) {
-          mdl->send("Input.Up");
+          mdl->navAction("up");
         } else if(key == Qt::Key_Down) {
-          mdl->send("Input.Down");
+          mdl->navAction("down");
         } else if(key == Qt::Key_Left) {
-          mdl->send("Input.Left");
+          mdl->navAction("left");
         } else if(key == Qt::Key_Right) {
-          mdl->send("Input.Right");
-        } else if(key == Qt::Key_S) {
+          mdl->navAction("right");
         } else if(key == Qt::Key_Space) {
           emit mdl->showKeyboard();
         }
